@@ -2,6 +2,27 @@
 #include <cctype>
 #include <iostream>
 #include <stdexcept>
+#include <string>
+
+double read_num(std::istream& is)
+{
+    std::string s;
+    for (char c; (is >> c); ) {
+        if (std::isdigit(c)) {
+            s += c;
+        } else if (c == '.' ){
+            s += c;
+        } else if (c == ',') {
+            continue;
+        } else if (c == '_') {
+            continue;
+        } else {
+            is.putback(c);
+            break;
+        }
+    }
+    return std::stod(s);
+}
 
 Token Token_stream::get()
 {
@@ -13,16 +34,16 @@ Token Token_stream::get()
     char ch;
     is >> ch;
 
+    if (ch == '.' || std::isdigit(ch)) {
+        is.putback(ch);
+        double d = read_num(is);
+        return Token(Kind::num, d);
+    }
+
     if (is.eof()) {
         return Token(Kind::eoe);
     }
 
-    if (ch == '.' || std::isdigit(ch)) {
-        is.putback(ch);
-        double d;
-        is >> d;
-        return Token(Kind::num, d);
-    }
     else if (ch == '+') return Token(Kind::plus);
     else if (ch == '-') return Token(Kind::minus);
     else if (ch == '*') return Token(Kind::mult);
