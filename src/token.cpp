@@ -1,8 +1,8 @@
+#include "utils.h"
 #include "token.h"
 #include <cctype>
 #include <iostream>
 #include <stdexcept>
-#include "utils.h"
 
 Token Token_stream::get()
 {
