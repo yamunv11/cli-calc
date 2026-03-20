@@ -1,9 +1,26 @@
+#include <fstream>
 #include <sstream>
 #include <stdexcept>
+#include <string>
 #include "parser.h"
 #include "token.h"
 #include "readline/readline.h"
 #include "readline/history.h"
+
+void read_config()
+{
+    std::string config_path = std::string(std::getenv("HOME")) + "/.config/calc/calc.conf";
+    std::ifstream config_file{config_path};
+    if (!config_file) {
+        std::cerr << "can't find config file " << config_path << '\n';
+        return;
+    }
+    for (std::string line; std::getline(config_file, line);) {
+        std::istringstream is{line};
+        Token_stream ts { is };
+        std::cout << expression(ts) << '\n';
+    }
+}
 
 void repl()
 {
@@ -34,5 +51,6 @@ void repl()
 
 int main()
 {
+    read_config();
     repl();
 }
