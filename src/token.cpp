@@ -31,7 +31,7 @@ Token Token_stream::get()
     else if (ch == '(') return Token(Kind::obrace);
     else if (ch == ')') return Token(Kind::cbrace);
     else if (ch == 'q') return Token(Kind::quit);
-    else throw std::runtime_error("bad token");
+    else throw std::runtime_error(std::string("bad token '") + ch + '\'');
 }
 
 void Token_stream::putback(Token t)
