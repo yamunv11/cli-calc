@@ -2,27 +2,7 @@
 #include <cctype>
 #include <iostream>
 #include <stdexcept>
-#include <string>
-
-double read_num(std::istream& is)
-{
-    std::string s;
-    for (char c; (is >> c); ) {
-        if (std::isdigit(c)) {
-            s += c;
-        } else if (c == '.' ){
-            s += c;
-        } else if (c == ',') {
-            continue;
-        } else if (c == '_') {
-            continue;
-        } else {
-            is.putback(c);
-            break;
-        }
-    }
-    return std::stod(s);
-}
+#include "utils.h"
 
 Token Token_stream::get()
 {

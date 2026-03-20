@@ -4,6 +4,7 @@
 #include <string>
 #include "parser.h"
 #include "token.h"
+#include "utils.h"
 #include "readline/readline.h"
 #include "readline/history.h"
 
@@ -40,9 +41,11 @@ void repl()
                 ts.putback(next);
             double val = expression(ts);
             next = ts.get();
-            if (next.kind != Kind::eoe)
-                throw std::runtime_error("bad expression");
-            std::cout << val << '\n';
+            if (next.kind != Kind::eoe) {
+                std::cerr << color::red << "bad expression" << color::white << '\n';
+                continue;
+            }
+            std::cout << color::green << format_double(val) << color::white << '\n';
         } catch (std::exception &e) {
             std::cerr << e.what() << '\n';
         }
