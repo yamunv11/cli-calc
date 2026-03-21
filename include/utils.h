@@ -9,3 +9,4 @@ namespace color {
 
 double read_num(std::istream& is);
 std::string format_double(double value);
+double factorial(double n);

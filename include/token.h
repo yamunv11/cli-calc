@@ -11,6 +11,7 @@ enum class Kind {
     mult = '*',
     obrace = '(',
     cbrace = ')',
+    fac = '!',
     quit = 'q'
 };
 

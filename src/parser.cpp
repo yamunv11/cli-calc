@@ -1,6 +1,7 @@
 #include "token.h"
 #include <stdexcept>
 #include "parser.h"
+#include "utils.h"
 
 double expression(Token_stream& ts)
 {
@@ -52,13 +53,24 @@ double primary(Token_stream& ts)
 {
     Token next = ts.get();
     switch (next.kind) {
-    case Kind::num:
+    case Kind::num: {
+        Token is_fac = ts.get();
+        if (is_fac.kind == Kind::fac)
+            return factorial(next.value);
+        else
+            ts.putback(is_fac);
         return next.value;
+    }
     case Kind::obrace: {
         double val = expression(ts);
         next = ts.get();
         if (next.kind != Kind::cbrace)
             throw std::runtime_error("')' expected");
+        Token is_fac = ts.get();
+        if (is_fac.kind == Kind::fac)
+            return factorial(val);
+        else
+            ts.putback(is_fac);
         return val;
     }
     default:
