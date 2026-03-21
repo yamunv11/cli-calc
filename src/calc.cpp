@@ -37,6 +37,8 @@ void repl()
             Token next = ts.get();
             if (next.kind == Kind::quit)
                 break;
+            else if (next.kind == Kind::eoe)
+                continue;
             else
                 ts.putback(next);
             double val = expression(ts);
@@ -48,7 +50,7 @@ void repl()
             std::cout << color::green << format_double(val) << color::white << '\n';
         } catch (std::exception &e) {
             std::cerr << color::red << e.what() << color::white << '\n';
-        }
+        } 
     }
 }
 
