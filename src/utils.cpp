@@ -1,24 +1,32 @@
 #include <iostream>
 #include <sstream>
 #include <iomanip>
+#include <stdexcept>
 #include <string>
 #include <algorithm>
 
 double read_num(std::istream& is)
 {
     std::string s;
-    for (char c; is.get(c); ) {
+    char c, previous = '\0';
+    for (; is.get(c); previous = c) { // makes sure there's no succssive , or .
         if (std::isdigit(c)) {
             s += c;
         } else if (c == '.' ){
+            if (c == previous)
+                throw std::runtime_error("bad expression");
             s += c;
         } else if (c == ',') {
+            if (c == previous)
+                throw std::runtime_error("bad expression");
             continue;
         } else {
             is.putback(c);
             break;
         }
     }
+    if (c == ',')
+        throw std::runtime_error("bad token");
     return std::stod(s);
 }
 
@@ -59,4 +67,11 @@ std::string format_double(double value)
         return int_part;
     else
         return int_part + "." + frac_part;
+}
+
+double factorial(double n)
+{
+    if (n == 0)
+        return 1;
+    return n * factorial(n - 1);
 }
