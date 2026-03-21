@@ -44,12 +44,15 @@ void repl()
             double val = expression(ts);
             next = ts.get();
             if (next.kind != Kind::eoe) {
-                std::cerr << color::red << "bad expression" << color::white << '\n';
+                // std::cerr << color::red << "bad expression" << color::white << '\n';
+                std::cerr << "bad expression" << '\n';
                 continue;
             }
-            std::cout << color::green << format_double(val) << color::white << '\n';
+            // std::cout << color::green << format_double(val) << color::white << '\n';
+            std::cout << format_double(val) << '\n';
         } catch (std::exception &e) {
-            std::cerr << color::red << e.what() << color::white << '\n';
+            // std::cerr << color::red << e.what() << color::white << '\n';
+            std::cerr << e.what() << '\n';
         } 
     }
 }
