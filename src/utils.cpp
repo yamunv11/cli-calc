@@ -71,6 +71,8 @@ std::string format_double(double value)
 
 double factorial(double n)
 {
+    if (int(n) != n)
+        throw std::runtime_error("factorial requries a postive integer");
     if (n == 0)
         return 1;
     return n * factorial(n - 1);

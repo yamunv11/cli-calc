@@ -57,6 +57,11 @@ double primary(Token_stream& ts)
         next = ts.get();
         if (next.kind != Kind::num)
             throw std::runtime_error("primary expected");
+        Token is_fac = ts.get();
+        if (is_fac.kind == Kind::fac)
+            throw std::runtime_error("factorial requries a postive integer");
+        else
+            ts.putback(is_fac);
         return -1 * next.value;
     }
     case Kind::num: {
