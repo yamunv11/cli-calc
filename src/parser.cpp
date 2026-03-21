@@ -53,6 +53,12 @@ double primary(Token_stream& ts)
 {
     Token next = ts.get();
     switch (next.kind) {
+    case Kind::minus: {
+        next = ts.get();
+        if (next.kind != Kind::num)
+            throw std::runtime_error("primary expected");
+        return -1 * next.value;
+    }
     case Kind::num: {
         Token is_fac = ts.get();
         if (is_fac.kind == Kind::fac)
