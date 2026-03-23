@@ -34,6 +34,7 @@ Token TokenStream::get()
     else if (ch == ')') return Token(Kind::cbrace);
     else if (ch == 'q') return Token(Kind::quit);
     else if (ch == '!') return Token(Kind::factorial);
+    else if (ch == '^') return Token(Kind::power);
     else throw std::runtime_error(std::string("bad token '") + ch + '\'');
 }
 

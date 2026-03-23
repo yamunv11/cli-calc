@@ -1,4 +1,5 @@
 #include "token.h"
+#include <cmath>
 #include <stdexcept>
 #include "parser.h"
 #include "utils.h"
@@ -39,6 +40,12 @@ double term(TokenStream& ts)
             if (d == 0)
                 throw std::runtime_error("divion by zero");
             left /= d;
+            next = ts.get();
+            break;
+        }
+        case Kind::power: {
+            double exponent = primary(ts);
+            left = std::pow(left, exponent);
             next = ts.get();
             break;
         }

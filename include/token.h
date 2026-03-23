@@ -15,6 +15,7 @@ enum class Kind {
     obrace,
     cbrace,
     factorial,
+    power,
     quit
 };
 
