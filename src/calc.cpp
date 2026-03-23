@@ -52,10 +52,9 @@ void repl()
             Token next = ts.get();
             if (next.kind == Kind::quit)
                 break;
-            else if (next.kind == Kind::eoe)
+            if (next.kind == Kind::eoe)
                 continue;
-            else
-                ts.putback(next);
+            ts.putback(next);
             double val = expression(ts);
             next = ts.get();
             if (next.kind != Kind::eoe) { // if the string stram is not yet exahusted
