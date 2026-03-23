@@ -3,7 +3,7 @@
 #include "parser.h"
 #include "utils.h"
 
-double expression(Token_stream& ts)
+double expression(TokenStream& ts)
 {
     double left = term(ts);
     Token next = ts.get();
@@ -24,7 +24,7 @@ double expression(Token_stream& ts)
     }
 }
 
-double term(Token_stream& ts)
+double term(TokenStream& ts)
 {
     double left = primary(ts);
     Token next = ts.get();
@@ -49,7 +49,7 @@ double term(Token_stream& ts)
     }
 }
 
-double primary(Token_stream& ts)
+double primary(TokenStream& ts)
 {
     Token next = ts.get();
     switch (next.kind) {
@@ -57,8 +57,10 @@ double primary(Token_stream& ts)
         next = ts.get();
         if (next.kind != Kind::num)
             throw std::runtime_error("primary expected");
-        Token is_fac = ts.get();
-        if (is_fac.kind == Kind::fac)
+        // we check for factorial here for better error messages
+        // if we didn't, we will just get "bad expression" because we wouldn't know how to parse (-3!)
+        Token is_fac = ts.get(); 
+        if (is_fac.kind == Kind::factorial)
             throw std::runtime_error("factorial requries a postive integer");
         else
             ts.putback(is_fac);
@@ -66,7 +68,7 @@ double primary(Token_stream& ts)
     }
     case Kind::num: {
         Token is_fac = ts.get();
-        if (is_fac.kind == Kind::fac)
+        if (is_fac.kind == Kind::factorial)
             return factorial(next.value);
         else
             ts.putback(is_fac);
@@ -78,7 +80,7 @@ double primary(Token_stream& ts)
         if (next.kind != Kind::cbrace)
             throw std::runtime_error("')' expected");
         Token is_fac = ts.get();
-        if (is_fac.kind == Kind::fac)
+        if (is_fac.kind == Kind::factorial)
             return factorial(val);
         else
             ts.putback(is_fac);

@@ -2,6 +2,32 @@
 
 #include "token.h"
 
-double expression(Token_stream& ts);
-double term(Token_stream& ts);
-double primary(Token_stream& ts);
+/**
+ *Reads and evaluates an expression from a token stream.
+ *
+ * @param  ts The token stream to read from.
+ * @return    The value for the parsed expression.
+ * @see       token.h for more info about token streams.
+ * @see       grammar.txt for more info about what is an expression.
+ */
+double expression(TokenStream& ts);
+
+/**
+ *Reads and evaluates a term from a token stream.
+ *
+ * @param  ts The token stream to read from.
+ * @return    The value for the parsed term.
+ * @see       token.h for more info about token streams.
+ * @see       grammar.txt for more info about what is a term.
+ */
+double term(TokenStream& ts);
+
+/**
+ *Reads and evaluates a primary from a token stream.
+ *
+ * @param  ts The token stream to read from.
+ * @return    The value for the parsed primary.
+ * @see       token.h for more info about token streams.
+ * @see       grammar.txt for more info about what is a primary.
+ */
+double primary(TokenStream& ts);

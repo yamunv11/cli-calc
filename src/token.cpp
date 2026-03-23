@@ -4,7 +4,7 @@
 #include <iostream>
 #include <stdexcept>
 
-Token Token_stream::get()
+Token TokenStream::get()
 {
     if (full) {
         full = false;
@@ -33,11 +33,11 @@ Token Token_stream::get()
     else if (ch == '(') return Token(Kind::obrace);
     else if (ch == ')') return Token(Kind::cbrace);
     else if (ch == 'q') return Token(Kind::quit);
-    else if (ch == '!') return Token(Kind::fac);
+    else if (ch == '!') return Token(Kind::factorial);
     else throw std::runtime_error(std::string("bad token '") + ch + '\'');
 }
 
-void Token_stream::putback(Token t)
+void TokenStream::putback(Token t)
 {
     if (full)
         throw std::runtime_error("putback into full buffer");

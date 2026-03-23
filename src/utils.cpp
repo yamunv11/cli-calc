@@ -4,29 +4,28 @@
 #include <stdexcept>
 #include <string>
 #include <algorithm>
+#include "token.h"
 
 double read_num(std::istream& is)
 {
     std::string s;
     char c, previous = '\0';
-    for (; is.get(c); previous = c) { // makes sure there's no succssive , or .
+    for (; is.get(c); previous = c) {
         if (std::isdigit(c)) {
             s += c;
-        } else if (c == '.' ){
-            if (c == previous)
-                throw std::runtime_error("bad expression");
+        } else if (c == '.'){
+            if (previous == '.' || previous == ',')
+                throw std::runtime_error("consecutive commas");
             s += c;
         } else if (c == ',') {
-            if (c == previous)
-                throw std::runtime_error("bad expression");
+            if (previous == '.' || previous == ',')
+                throw std::runtime_error("consecutive commas");
             continue;
         } else {
             is.putback(c);
             break;
         }
     }
-    if (c == ',')
-        throw std::runtime_error("bad token");
     return std::stod(s);
 }
 
@@ -69,7 +68,7 @@ std::string format_double(double value)
         return int_part + "." + frac_part;
 }
 
-double factorial(double n)
+long double factorial(double n)
 {
     if (int(n) != n)
         throw std::runtime_error("factorial requries a postive integer");

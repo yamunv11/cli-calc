@@ -10,5 +10,5 @@ sudo make install
 ```
 
 ## TODO
-- clean up the code
 - add support for variables
+- refactor to an abstract syntax tree (AST)
