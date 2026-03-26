@@ -8,22 +8,22 @@ The calculator uses streams for all sort of input.
 - if expression() parsed a whole expression without the next token being eoe, that means there's trailing garbage after our expression.
 
 # grammar
-Expression:\\
-    Term\\
-    Term + Term\\
-    Term - Term\\
+Expression:\
+    Term\
+    Term + Term\
+    Term - Term\
 
-Term:\\
-    Factor\\
-    Factor * Factor\\
-    Factor / Factor\\
+Term:\
+    Factor\
+    Factor * Factor\
+    Factor / Factor\
 
-Factor:\\
-    Primary ^ Primary\\
+Factor:\
+    Primary ^ Primary\
 
-Primary:\\
-    Number\\
-    Variable\\
-    (Expression)\\
-    Primary!\\
+Primary:\
+    Number\
+    Variable\
+    (Expression)\
+    Primary!\
     -Primary
