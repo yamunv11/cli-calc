@@ -1,10 +1,10 @@
+#include <cmath>
 #include <iostream>
 #include <sstream>
 #include <iomanip>
 #include <stdexcept>
 #include <string>
 #include <algorithm>
-#include "token.h"
 
 double read_num(std::istream& is)
 {
@@ -70,7 +70,7 @@ std::string format_double(double value)
 
 long double factorial(double n)
 {
-    if (int(n) != n)
+    if (std::floor(n) != n)
         throw std::runtime_error("factorial requries a postive integer");
     if (n == 0)
         return 1;

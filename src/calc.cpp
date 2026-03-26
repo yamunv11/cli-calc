@@ -7,6 +7,7 @@
 #include "utils.h"
 #include "readline/readline.h"
 #include "readline/history.h"
+#include "var.h"
 
 void read_config()
 {
@@ -24,13 +25,13 @@ void read_config()
         for (; std::getline(config_file, line);) {
             std::istringstream is{line};
             TokenStream ts { is };
-            expression(ts);
+            statement(ts);
         }
     } catch (std::exception &e) {
         // ORIG
-        // std::cerr << color::red << "Error in config expression: " << line << color::white << '\n';
+        // std::cerr << color::red << "Error in config statement: " << line << color::white << '\n';
         // DEBUG
-        std::cerr << "Error in config expression: " << line << '\n';
+        std::cerr << "Error in config statement: " << line << '\n';
         // ORIG
         // std::cerr << color::red << "Message: " << e.what() << color::white << '\n';
         // DEBUG
@@ -55,15 +56,16 @@ void repl()
             if (next.kind == Kind::eoe)
                 continue;
             ts.putback(next);
-            double val = expression(ts);
+            double val = statement(ts);
             next = ts.get();
             if (next.kind != Kind::eoe) { // if the string stram is not yet exahusted
                 // ORIG
-                // std::cerr << color::red << "bad expression" << color::white << '\n';
+                // std::cerr << color::red << "bad statement" << color::white << '\n';
                 // DEBUG
-                std::cerr << "bad expression" << '\n';
+                std::cerr << "bad statement" << '\n';
                 continue;
             }
+            set_value("ans", val);
             // ORIG
             // std::cout << color::green << format_double(val) << color::white << '\n';
             // DEBUG
@@ -79,6 +81,7 @@ void repl()
 
 int main()
 {
+    define_name("ans", 0);
     read_config();
     repl();
 }

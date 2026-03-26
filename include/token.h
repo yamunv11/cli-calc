@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include <vector>
 
 /**
  *A type to store the kinds of tokens we can handle in our calculator.
@@ -16,6 +17,9 @@ enum class Kind {
     cbrace,
     factorial,
     power,
+    let,
+    name,
+    assignment,
     quit
 };
 
@@ -27,10 +31,13 @@ class Token {
 public:
     Kind kind; /**< The member kind of type Kind to represent the kind of the token. */
     double value; /**< The member value of type double to optionally represent the numerical value of tokens of Kind::num. */
+    std::string name;
     Token(Kind k, double v)
         : kind(k), value(v) {}
     Token(Kind k)
         : kind(k), value(0) {}
+    Token(Kind k, std::string n)
+        : kind(k), value(0), name{n} {}
 };
 
 /**
@@ -48,6 +55,5 @@ private:
      * Temporary buffer to store tokens from putback() for later use.
      * Next get() would return this token if full = true
      */
-    Token buffer = {Kind::num}; 
-    bool full = false;          /**< if true, next get() will return buffer */
+    std::vector<Token> buffer;
 };

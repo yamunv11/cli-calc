@@ -2,6 +2,9 @@
 
 #include "token.h"
 
+double statement(TokenStream &ts);
+double declaration(TokenStream &ts);
+
 /**
  *Reads and evaluates an expression from a token stream.
  *
@@ -31,3 +34,5 @@ double term(TokenStream& ts);
  * @see       grammar.txt for more info about what is a primary.
  */
 double primary(TokenStream& ts);
+double value(TokenStream &ts);
+double factor(TokenStream &ts);
