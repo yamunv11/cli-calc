@@ -37,4 +37,4 @@ std::string format_double(double value);
  * @details  The function accepts a double deliberately, because one of its core
  *           functionalities is to throw an error when receiving a decimal number.
  */
-int factorial(double n);
+long double factorial(double n);
