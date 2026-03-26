@@ -9,21 +9,21 @@ The calculator uses streams for all sort of input.
 
 # grammar
 Expression:\
-    Term\
-    Term + Term\
-    Term - Term\
+    \tTerm\
+    \tTerm + Term\
+    \tTerm - Term
 
 Term:\
-    Factor\
-    Factor * Factor\
-    Factor / Factor\
+    \tFactor\
+    \tFactor * Factor\
+    \tFactor / Factor
 
 Factor:\
-    Primary ^ Primary\
+    \tPrimary ^ Primary
 
 Primary:\
-    Number\
-    Variable\
-    (Expression)\
-    Primary!\
-    -Primary
+    \tNumber\
+    \tVariable\
+    \t(Expression)\
+    \tPrimary!\
+    \t-Primary
