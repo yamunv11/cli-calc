@@ -6,29 +6,6 @@
 #include <string>
 #include <algorithm>
 
-double read_num(std::istream& is)
-{
-    std::string s;
-    char c, previous = '\0';
-    for (; is.get(c); previous = c) {
-        if (std::isdigit(c)) {
-            s += c;
-        } else if (c == '.'){
-            if (previous == '.' || previous == ',')
-                throw std::runtime_error("consecutive commas");
-            s += c;
-        } else if (c == ',') {
-            if (previous == '.' || previous == ',')
-                throw std::runtime_error("consecutive commas");
-            continue;
-        } else {
-            is.putback(c);
-            break;
-        }
-    }
-    return std::stod(s);
-}
-
 std::string format_double(double value)
 {
     std::ostringstream oss;

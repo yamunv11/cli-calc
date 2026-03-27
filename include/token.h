@@ -20,6 +20,10 @@ enum class Kind {
     let,
     name,
     assignment,
+    comma,
+    print,
+    str,
+    comment,
     quit
 };
 

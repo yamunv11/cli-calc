@@ -2,6 +2,7 @@
 #include "token.h"
 #include "utils.h"
 #include "var.h"
+#include "func.h"
 #include <cmath>
 #include <stdexcept>
 
@@ -12,14 +13,14 @@ double statement(TokenStream &ts)
     case Kind::let:
         return declaration(ts);
     case Kind::name: {
-        Token is_ass = ts.get();
-        if (is_ass.kind == Kind::assignment) {
+        Token next = ts.get();
+        if (next.kind == Kind::assignment) {
             if (!is_declared(t.name))
                 throw std::runtime_error("undeclared identfier: " + t.name);
             else
                 return set_value(t.name, expression(ts));
         } else {
-            ts.putback(is_ass);
+            ts.putback(next);
             ts.putback(t);
             return expression(ts);            
         }
@@ -126,9 +127,26 @@ double primary(TokenStream &ts)
     case Kind::num:
         val = next.value;
         break;
-    case Kind::name:
-        val = get_value(next.name);
+    case Kind::name: {
+        Token is_funcall = ts.get();
+        if (is_funcall.kind == Kind::obrace) {
+            if (next.name == "print") {
+                next = ts.get();
+                if (next.kind != Kind::str)
+                    throw std::runtime_error("No string to print");
+                std::cout << next.name;
+            } else
+                val = funcall(next.name, list(ts));
+            is_funcall = ts.get();
+            if (is_funcall.kind != Kind::cbrace)
+                throw std::runtime_error("')' expected");
+        }
+        else {
+            ts.putback(is_funcall);
+            val = get_value(next.name);
+        }
         break;
+    }
     default:
         throw std::runtime_error("primary expected");
     }
@@ -141,33 +159,28 @@ double primary(TokenStream &ts)
     return val;
 }
 
-// double value(TokenStream &ts)
-// {
-//     Token next = ts.get();
-//     switch (next.kind) {
-//         case Kind::num: {
-//         Token is_fac = ts.get();
-//         if (is_fac.kind == Kind::factorial)
-//             return factorial(next.value);
-//         else
-//             ts.putback(is_fac);
-//         return next.value;
-//     }
-//     case Kind::obrace: {
-//         double val = expression(ts);
-//         next = ts.get();
-//         if (next.kind != Kind::cbrace)
-//             throw std::runtime_error("')' expected");
-//         Token is_fac = ts.get();
-//         if (is_fac.kind == Kind::factorial)
-//             return factorial(val);
-//         else
-//             ts.putback(is_fac);
-//         return val;
-//     }
-//     case Kind::name:
-//         return get_value(next.name);
-//     default:
-//         throw std::runtime_error("primary expected");
-//     }
-// }
+std::vector<double> list(TokenStream &ts)
+{
+    std::vector<double> list;
+    Token next = ts.get();
+    if (next.kind == Kind::cbrace) {
+        ts.putback(next);
+        return list;
+    }
+    else
+        ts.putback(next);
+
+    while (true) {
+        list.push_back(expression(ts));
+        next = ts.get();
+        switch (next.kind) {
+        case Kind::comma:
+            continue;
+        case Kind::cbrace:
+            ts.putback(next);
+            return list;
+        default:
+            throw std::runtime_error("invalid list syntax");
+        }
+    }
+}    

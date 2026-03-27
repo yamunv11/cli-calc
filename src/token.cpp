@@ -32,7 +32,8 @@ Token TokenStream::get()
 
     if (ch == '.' || std::isdigit(ch)) {
         is.putback(ch);
-        double d = read_num(is);
+        double d = 0;
+        is >> d;
         return Token(Kind::num, d);
     } else if (ch == '+')
         return Token(Kind::plus);
@@ -46,6 +47,15 @@ Token TokenStream::get()
     else if (ch == '!') return Token(Kind::factorial);
     else if (ch == '^') return Token(Kind::power);
     else if (ch == '=') return Token(Kind::assignment);
+    else if (ch == ',') return Token(Kind::comma);
+    else if (ch == ';') return Token(Kind::print);
+    else if (ch == '#') return Token(Kind::comment);
+    else if (ch == '"') {
+        std::string str;
+        while (is.get(ch) && ch != '"')
+            str += ch;
+        return Token(Kind::str, str);
+    }
 
     else if (std::isalpha(ch)) { // case of a name
         std::string s;

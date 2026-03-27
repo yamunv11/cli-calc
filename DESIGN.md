@@ -23,7 +23,12 @@ Factor:\
 
 Primary:\
     &emsp;Number\
-    &emsp;Variable\
+    &emsp;Name\
+    &emsp;Name(List)\
     &emsp;(Expression)\
     &emsp;Primary!\
     &emsp;-Primary
+    
+List:\
+    &emsp;()\
+    &emsp;(Expression, *)\

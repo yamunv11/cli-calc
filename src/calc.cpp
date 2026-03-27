@@ -39,6 +39,47 @@ void read_config()
     }
 }
 
+void eval(std::string fname)
+{
+    std::string line; // string to store input, defined here to be able to use it in catch
+    try {
+        std::ifstream read_file{fname};
+        if (!read_file) {
+            // ORIG
+            // std::cerr << color::red << "can't find config file " << config_path << color::white << '\n';
+            // DEBUG
+            std::cerr << "can't find file " << fname << '\n';
+            return;
+        }
+        for (; std::getline(read_file, line);) {
+            std::istringstream is{line};
+            TokenStream ts { is };
+            Token next = ts.get();
+            if (next.kind == Kind::quit)
+                break;
+            if (next.kind == Kind::eoe)
+                continue;
+            if (next.kind == Kind::comment)
+                continue;
+            ts.putback(next);
+
+            double val = statement(ts);
+            next = ts.get();
+            if (next.kind == Kind::print)
+                std::cout << val << '\n';
+        }
+    } catch (std::exception &e) {
+        // ORIG
+        // std::cerr << color::red << "Error in config statement: " << line << color::white << '\n';
+        // DEBUG
+        std::cerr << "Error in statement: " << line << '\n';
+        // ORIG
+        // std::cerr << color::red << "Message: " << e.what() << color::white << '\n';
+        // DEBUG
+        std::cerr << "Message: " << e.what() << '\n';
+    }
+}
+
 void repl()
 {
     while (true) {
@@ -79,9 +120,17 @@ void repl()
     }
 }
 
-int main()
+int main(int argc, char **argv)
 {
     define_name("ans", 0);
     read_config();
+    if (argc > 1) {
+        if (argc > 2) {
+            std::cerr << "Please provide only one file\n";
+            return 1;
+        }
+        eval(argv[1]);
+        return 0;
+    }
     repl();
 }

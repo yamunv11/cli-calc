@@ -36,3 +36,4 @@ double term(TokenStream& ts);
 double primary(TokenStream& ts);
 double value(TokenStream &ts);
 double factor(TokenStream &ts);
+std::vector<double> list(TokenStream &ts);
