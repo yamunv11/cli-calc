@@ -10,5 +10,5 @@ sudo make install
 ```
 
 ## TODO
-- add support for variables
 - refactor to an abstract syntax tree (AST)
+- add support for user defined functions
