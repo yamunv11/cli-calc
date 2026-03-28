@@ -13,22 +13,22 @@ Statement:\
     &emsp;Assignment\
     &emsp;Print\
     &emsp;Expression\
-    &emsp;Expression Print\
+    &emsp;Expression Print
     
 Print:\
     &emsp;;
     
 Declaration:\
-    &emsp;'let' Name '=' Expression\
+    &emsp;'let' Name '=' Expression
     
 Assignment:\
-    &emsp;Name = Expression\
+    &emsp;Name = Expression
     
 Print:\
-    &emsp;print(str)\
+    &emsp;print(str)
     
 Str:\
-    &emsp;'"' text '"'\
+    &emsp;'"' text '"'
 
 Expression:\
     &emsp;Term\
@@ -48,9 +48,9 @@ Primary:\
     &emsp;Name\
     &emsp;Name '(' List ')'\
     &emsp;'(' Expression ')'\
-    &emsp;'-' Primary
-    &emsp;Primary '!'\
+    &emsp;'-' Primary\
+    &emsp;Primary '!'
     
 List:\
     &emsp;'('')'\
-    &emsp;'(' Expression, * ')' \
+    &emsp;'(' Expression, * ')'
