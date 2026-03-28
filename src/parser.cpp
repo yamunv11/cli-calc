@@ -1,8 +1,8 @@
 #include "parser.h"
+#include "func.h"
 #include "token.h"
 #include "utils.h"
 #include "var.h"
-#include "func.h"
 #include <cmath>
 #include <stdexcept>
 
@@ -12,17 +12,29 @@ double statement(TokenStream &ts)
     switch (t.kind) {
     case Kind::let:
         return declaration(ts);
-    case Kind::name: {
+    case Kind::name: {          // could be assignment, print, or normal expression
         Token next = ts.get();
         if (next.kind == Kind::assignment) {
             if (!is_declared(t.name))
                 throw std::runtime_error("undeclared identfier: " + t.name);
             else
                 return set_value(t.name, expression(ts));
+        } else if (next.kind == Kind::obrace) {
+            if (t.name == "print") {
+                next = ts.get();
+                if (next.kind != Kind::str)
+                    throw std::runtime_error("No string to print");
+                std::cout << next.name << '\n';
+                return 0;
+            } else {
+                ts.putback(next);
+                ts.putback(t);
+                return expression(ts);
+            }
         } else {
             ts.putback(next);
             ts.putback(t);
-            return expression(ts);            
+            return expression(ts);
         }
     }
     default:
@@ -130,18 +142,11 @@ double primary(TokenStream &ts)
     case Kind::name: {
         Token is_funcall = ts.get();
         if (is_funcall.kind == Kind::obrace) {
-            if (next.name == "print") {
-                next = ts.get();
-                if (next.kind != Kind::str)
-                    throw std::runtime_error("No string to print");
-                std::cout << next.name << '\n';
-            } else
-                val = funcall(next.name, list(ts));
+            val = funcall(next.name, list(ts));
             is_funcall = ts.get();
             if (is_funcall.kind != Kind::cbrace)
                 throw std::runtime_error("')' expected");
-        }
-        else {
+        } else {
             ts.putback(is_funcall);
             val = get_value(next.name);
         }
@@ -166,8 +171,7 @@ std::vector<double> list(TokenStream &ts)
     if (next.kind == Kind::cbrace) {
         ts.putback(next);
         return list;
-    }
-    else
+    } else
         ts.putback(next);
 
     while (true) {
@@ -183,4 +187,4 @@ std::vector<double> list(TokenStream &ts)
             throw std::runtime_error("invalid list syntax");
         }
     }
-}    
+}
