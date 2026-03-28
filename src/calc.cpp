@@ -16,26 +16,24 @@ void read_config()
         const std::string config_path = std::string(std::getenv("HOME")) + "/.config/calc/calc.conf";
         std::ifstream config_file{config_path};
         if (!config_file) {
-            // ORIG
-            // std::cerr << color::red << "can't find config file " << config_path << color::white << '\n';
-            // DEBUG
-            std::cerr << "can't find config file " << config_path << '\n';
+            std::cerr << color::red << "\ncan't find config file " << config_path << color::white << '\n';
             return;
         }
         for (; std::getline(config_file, line);) {
             std::istringstream is{line};
             TokenStream ts { is };
+            Token next = ts.get();
+            if (next.kind == Kind::quit)
+                break;
+            if (next.kind == Kind::eoe)
+                continue;
+            ts.putback(next);
+
             statement(ts);
         }
     } catch (std::exception &e) {
-        // ORIG
-        // std::cerr << color::red << "Error in config statement: " << line << color::white << '\n';
-        // DEBUG
-        std::cerr << "Error in config statement: " << line << '\n';
-        // ORIG
-        // std::cerr << color::red << "Message: " << e.what() << color::white << '\n';
-        // DEBUG
-        std::cerr << "Message: " << e.what() << '\n';
+        std::cerr << color::red << "\nError in config statement: " << line << color::white << '\n';
+        std::cerr << color::red << "Message: " << e.what() << color::white << '\n';
     }
 }
 
@@ -45,10 +43,7 @@ void eval(std::string fname)
     try {
         std::ifstream read_file{fname};
         if (!read_file) {
-            // ORIG
-            // std::cerr << color::red << "can't find config file " << config_path << color::white << '\n';
-            // DEBUG
-            std::cerr << "can't find file " << fname << '\n';
+            std::cerr << color::red << "\ncan't find file " << fname << color::white << '\n';
             return;
         }
         for (; std::getline(read_file, line);) {
@@ -59,8 +54,6 @@ void eval(std::string fname)
                 break;
             if (next.kind == Kind::eoe)
                 continue;
-            if (next.kind == Kind::comment)
-                continue;
             ts.putback(next);
 
             double val = statement(ts);
@@ -69,14 +62,8 @@ void eval(std::string fname)
                 std::cout << val << '\n';
         }
     } catch (std::exception &e) {
-        // ORIG
-        // std::cerr << color::red << "Error in config statement: " << line << color::white << '\n';
-        // DEBUG
-        std::cerr << "Error in statement: " << line << '\n';
-        // ORIG
-        // std::cerr << color::red << "Message: " << e.what() << color::white << '\n';
-        // DEBUG
-        std::cerr << "Message: " << e.what() << '\n';
+        std::cerr << color::red << "\nError in statement: " << line << color::white << '\n';
+        std::cerr << color::red << "Message: " << e.what() << color::white << '\n';
     }
 }
 
@@ -100,22 +87,13 @@ void repl()
             double val = statement(ts);
             next = ts.get();
             if (next.kind != Kind::eoe) { // if the string stram is not yet exahusted
-                // ORIG
-                // std::cerr << color::red << "bad statement" << color::white << '\n';
-                // DEBUG
-                std::cerr << "bad statement" << '\n';
+                std::cerr << color::red << "bad statement" << color::white << '\n';
                 continue;
             }
             set_value("ans", val);
-            // ORIG
-            // std::cout << color::green << format_double(val) << color::white << '\n';
-            // DEBUG
-            std::cout << format_double(val) << '\n';
+            std::cout << color::green << format_double(val) << color::white << '\n';
         } catch (std::exception &e) {
-            // ORIG
-            // std::cerr << color::red << e.what() << color::white << '\n';
-            // DEBUG
-            std::cerr << e.what() << '\n';
+            std::cerr << color::red << e.what() << color::white << '\n';
         } 
     }
 }

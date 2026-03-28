@@ -49,7 +49,10 @@ Token TokenStream::get()
     else if (ch == '=') return Token(Kind::assignment);
     else if (ch == ',') return Token(Kind::comma);
     else if (ch == ';') return Token(Kind::print);
-    else if (ch == '#') return Token(Kind::comment);
+    else if (ch == '#') {
+        clear();
+        return Token(Kind::eoe);
+    }
     else if (ch == '"') {
         std::string str;
         while (is.get(ch) && ch != '"')
@@ -75,3 +78,10 @@ Token TokenStream::get()
     else
         throw std::runtime_error(std::string("bad token '") + ch + '\'');
 }
+
+void TokenStream::clear()
+{
+    Token next = this->get();
+    while (next.kind != Kind::eoe)
+        next = this->get();
+}    

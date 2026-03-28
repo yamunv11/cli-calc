@@ -23,7 +23,6 @@ enum class Kind {
     comma,
     print,
     str,
-    comment,
     quit
 };
 
@@ -50,8 +49,9 @@ public:
 class TokenStream {
 public:
     TokenStream(std::istream& s) : is(s) {} 
-    Token get();                /**< Method to get a token of the stream. */
-    void putback(Token t);      /**< Method to put back a token to the stream for later use. */
+    Token get();           /**< Method to get a token of the stream. */
+    void putback(Token t); /**< Method to put back a token to the stream for later use. */
+    void clear();          /**< Method to clear the rest of the stream . */
 
 private:
     std::istream& is;           /**< Input stream to tokenize. */

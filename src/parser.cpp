@@ -134,7 +134,7 @@ double primary(TokenStream &ts)
                 next = ts.get();
                 if (next.kind != Kind::str)
                     throw std::runtime_error("No string to print");
-                std::cout << next.name;
+                std::cout << next.name << '\n';
             } else
                 val = funcall(next.name, list(ts));
             is_funcall = ts.get();
