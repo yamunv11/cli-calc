@@ -91,7 +91,7 @@ void repl()
                 continue;
             }
             set_value("ans", val);
-            std::cout << color::green << format_double(val) << color::white << '\n';
+            std::cout << "= " << color::green << format_double(val) << color::white << '\n';
         } catch (std::exception &e) {
             std::cerr << color::red << e.what() << color::white << '\n';
         } 
