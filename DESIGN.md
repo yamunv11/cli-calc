@@ -25,11 +25,8 @@ Assignment:\
     &emsp;Name = Expression
     
 Print:\
-    &emsp;print(str)
+    &emsp;print("str")
     
-Str:\
-    &emsp;'"' text '"'
-
 Expression:\
     &emsp;Term\
     &emsp;Term '+' Term\
