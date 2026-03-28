@@ -52,5 +52,5 @@ Primary:\
     &emsp;Primary '!'
     
 List:\
-    &emsp;'('')'\
+    &emsp;'(' ')'\
     &emsp;'(' Expression, * ')'
