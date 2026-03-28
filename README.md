@@ -6,7 +6,7 @@ A simple, powerful, scriptable, CLI calculator.
 cd $HOME
 git clone https://github.com/yamunv11/cli-calc
 cd cli-calc
-sudo make install
+make install
 ```
 
 ## TODO
