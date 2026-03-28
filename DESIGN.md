@@ -16,7 +16,7 @@ Statement:\
     &emsp;Expression Print\
     
 Print:\
-    &emsp;;\
+    &emsp;;
     
 Declaration:\
     &emsp;'let' Name '=' Expression\
